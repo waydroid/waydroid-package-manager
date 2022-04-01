@@ -31,6 +31,7 @@ Then you can install it like so:
     -i | --install | install (app_name): Searches for & installs an app
     -n | --remove | remove (app_name): uninstalls an app
     -m | --listapps | listapps: Lists all installed apps
+    -p | --apkinstall | apkinstall (apk_location): installs an apk
 
 ## Examples
 
