@@ -157,6 +157,16 @@ listApps() {
 	sudo waydroid app list
 }
 
+installApk() {
+	apkName="$1"
+	if [ "$(waydroid status | grep RUNNING)" == "" ];then
+		echo -e "${RED}waydroid is not running, please start it first ${NC}"
+		exit 1
+	fi
+	echo -e "${GREEN}Installing $apkName ${NC}"
+	sudo waydroid app install $apkName
+}
+
 # Sort through flags
 while test $# -gt 0
 do
@@ -176,6 +186,7 @@ do
       echo "	-i | --install | install (app_name): Searches for & installs an app"
       echo "	-n | --remove | remove (app_name): uninstalls an app"
       echo "	-m | --listapps | listapps: Lists all installed apps"
+      echo "	-p | --apkinstall | apkinstall (apk_location): installs an apk"
 	  exit 0
       ;;
     -c | --clean)
@@ -211,6 +222,9 @@ do
       ;;
     -m | --listapps | listapps)
 	  LIST_APPS="true";
+      ;;
+    -p | --apkinstall | apkinstall)
+	  APKINSTALL="true";
       ;;
   # ...
 
@@ -275,6 +289,8 @@ elif [ "$LIST_APPS" == "true" ]; then
 	listApps ;
 elif [ "$REMOVE" == "true" ]; then
 	removeApp "$1";
+elif [ "$APKINSTALL" == "true" ]; then
+	installApk "$1";
 elif [ "$INSTALL" == "true" ]; then
     # Start the main event
     # echo -e "${YELLOW}# Grabbing App${NC}"
