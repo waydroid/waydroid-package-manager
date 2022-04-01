@@ -27,3 +27,25 @@ Then you can install it like so:
     -i | --install | install (app_name): Searches for & installs an app
     -n | --remove | remove (app_name): uninstalls an app
     -m | --listapps | listapps: Lists all installed apps
+
+## Examples
+
+Add Repo:
+
+    wpm addrepo unofficialfirefox https://rfc2822.gitlab.io/fdroid-firefox/fdroid/repo
+
+List all installed apps:
+
+    wpm listapps
+
+Search for package:
+
+    wpm search org.kde.kdeconnect_tp
+
+Install package:
+
+    wpm install org.kde.kdeconnect_tp
+
+Remove pagkage:
+
+    wpm remove org.kde.kdeconnect_tp
