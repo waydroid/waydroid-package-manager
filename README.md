@@ -5,6 +5,7 @@ Easy to manage interface for managing (install/remove) Android apps into Waydroi
 ## Dependencies
 
     xmlstarlet
+    dpkg (armv7a/arm64)
 
 ## Install
 
