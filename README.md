@@ -5,7 +5,7 @@ Easy to manage interface for managing (install/remove) Android apps into Waydroi
 ## Dependencies
 
     xmlstarlet
-    dpkg (armv7a/arm64)
+    dpkg (armv7a/arm64 detection)
 
 ## Install
 
@@ -51,6 +51,10 @@ Search for package (searching by name itself is not yet implemented):
 Install package:
 
     wpm install org.kde.kdeconnect_tp
+
+Install APK package:
+
+    wpm apkinstall ~/Downloads/Smart-Dock.apk
 
 Remove pagkage:
 
