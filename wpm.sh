@@ -2,6 +2,11 @@
 # set -e
 
 # This script adds a package manager for Waydroid and will work across all devices. 
+# This script is provided as a convenience and is not intended to be used as an enterprise solution.
+# 
+# Copyright (c) 2022 Waydroid, GPLv3
+#
+# Created by: Waydroid Development Team (Erfan Abdi, Jon West and others)
 
 USER_HOME=$(xdg-user-dir)
 SHARED_DIR="$USER_HOME/.local/share/wpm"
