@@ -2,6 +2,10 @@
 
 Easy to manage interface for managing (install/remove) Android apps into Waydroid and managing (add/remove/update) repos as well 
 
+## Dependencies
+
+    xmlstarlet
+
 ## Install
 
 First, clone this repo:
@@ -38,7 +42,7 @@ List all installed apps:
 
     wpm listapps
 
-Search for package:
+Search for package (searching by name itself is not yet implemented):
 
     wpm search org.kde.kdeconnect_tp
 
