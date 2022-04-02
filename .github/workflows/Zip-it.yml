@@ -6,7 +6,6 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the bash branch
   push:
-    branches: [ master ]
     tags: [ 'release-*' ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -23,22 +22,18 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout code
-        if: startsWith(github.ref, 'refs/tags')
         uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
 
       # Runs a set of commands using the runners shell
       - name: zip it
-        if: startsWith(github.ref, 'refs/tags')
         run: zip -r wpm.zip *
 
       - name: setup release
-        if: startsWith(github.ref, 'refs/tags')
         uses: spenserblack/actions-tag-to-release@master
 
       - name: Make release
-        if: startsWith(github.ref, 'refs/tags')
         uses: softprops/action-gh-release@v1
         with:
           files: wpm.zip
