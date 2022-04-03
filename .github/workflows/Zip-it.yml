@@ -28,7 +28,11 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: zip it
-        run: zip -r wpm.zip *
+        run: |
+                mkdir bin share
+                mv wpm.sh bin/wpm
+                mv repos share
+                zip -r wpm.zip bin share
 
       - name: setup release
         uses: spenserblack/actions-tag-to-release@master
