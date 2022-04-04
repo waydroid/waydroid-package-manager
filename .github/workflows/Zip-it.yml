@@ -27,12 +27,18 @@ jobs:
           ref: ${{ github.ref }}
 
       # Runs a set of commands using the runners shell
+      - name: prepare for zipping
+        run: mv wpm.sh wpm
+
       - name: zip it
-        run: |
-                mkdir bin share
-                mv wpm.sh bin/wpm
-                mv repos share
-                zip -r wpm.zip bin share
+        uses: tuxecure/zip-it@v1.4
+        with:
+          prefix: ${HOME}/.local
+          pkg_directories: bin share
+          bin: wpm
+          data_directory: repos
+          maintainer: waydroid
+          package_name: wpm
 
       - name: setup release
         uses: spenserblack/actions-tag-to-release@master
