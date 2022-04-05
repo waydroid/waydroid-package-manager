@@ -31,14 +31,13 @@ jobs:
         run: mv wpm.sh wpm
 
       - name: zip it
-        env:
-          PACKAGE_NAME: wpm
         uses: tuxecure/zip-it@v1.9
         with:
           prefix: ${HOME}/.local
           pkg_directories: bin share
           bin: wpm
           data_directory: repos
+          package_name: wpm
 
       - name: setup release
         uses: spenserblack/actions-tag-to-release@master
