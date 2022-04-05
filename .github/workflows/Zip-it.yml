@@ -40,7 +40,7 @@ jobs:
           package_name: wpm
 
       - name: setup release
-        uses: spenserblack/actions-tag-to-release@master
+        uses: spenserblack/actions-tag-to-release@v0.1.4
 
       - name: Make release
         uses: softprops/action-gh-release@v1
