@@ -31,9 +31,8 @@ jobs:
         run: mv wpm.sh wpm
 
       - name: zip it
-        uses: tuxecure/zip-it@v2
+        uses: tuxecure/zip-it@v2.1
         with:
-          prefix: ${HOME}/.local
           pkg_directories: bin share
           bin: wpm
           data_directory: repos
