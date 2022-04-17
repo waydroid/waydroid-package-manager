@@ -1,5 +1,5 @@
 # Waydroid Package Manager
-Version 1.0.1
+Version 1.0.14
 
 Easy to use interface for managing (install/remove) Android apps into [Waydroid](https://waydro.id) and managing (add/remove/update) repos as well
 This script is provided as a convenience and is not intended to be used as an enterprise solution.
@@ -23,7 +23,7 @@ First, clone this repo:
 Then you can install it like so:
 
     sudo chmod +x wpm.sh
-    cp wpm.sh ~/.local/bin/wpm && cp -r repos/ ~/.local/share/wpm/
+    mkdir -p ~/.local/share/wpm && cp wpm.sh ~/.local/bin/wpm && mkdir -p ~/.local/share/wpm/repos && cp -r repos/* ~/.local/share/wpm/repos
 
 ## Usage
 

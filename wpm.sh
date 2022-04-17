@@ -17,7 +17,7 @@ REPOSFOLDER="$SHARED_DIR/repos"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
-LT_BLUE='\033[0;34m'
+LT_BLUE='\033[0;94m'
 
 NC='\033[0m' # No Color
 
@@ -113,9 +113,19 @@ searchRepo() {
 	fi
 		marketvercode="$(xmlstarlet sel -t -m '//application[id="'"$package"'"]' -v ./nativecode "$repo_dir"/index.xml || true)"
 		apk="$(xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./apkname "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[1]' -v ./apkname "$repo_dir"/index.xml)"
+		size="$(xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./size "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[1]' -v ./size "$repo_dir"/index.xml)"
+		version="$(xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./version "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[1]' -v ./version "$repo_dir"/index.xml)"
+		sdk="$(xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./sdkver "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[1]' -v ./sdkver "$repo_dir"/index.xml)"
+		targetsdk="$(xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./targetSdkVersion "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[1]' -v ./targetSdkVersion "$repo_dir"/index.xml)"
 		if [ "$apk" != "" ]; then 
-			echo "Found in repo: $repo"
-        	echo "Package: $apk"
+			echo ""
+			echo -e "${GREEN}Found in repo: ${NC}$repo"
+        	echo -e "Package: ${LT_BLUE}$apk${NC}"
+        	echo "Size: $size"
+        	echo "Version: $version"
+        	echo "SDK: $sdk"
+        	echo "TargetSDK: $targetsdk"
+			echo ""
 			return 0
 		else
 			# echo "$3 Not in repo: $repo"
