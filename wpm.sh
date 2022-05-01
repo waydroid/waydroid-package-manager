@@ -70,7 +70,7 @@ addRepo() {
 		echo "$repoUrl" > "$REPOSFOLDER/$repo"
 	fi
 	echo "Added repo: $repo $repoUrl"
-	exit 1
+	exit 0
 }
 
 updateRepo() {
@@ -80,7 +80,7 @@ updateRepo() {
 		echo "$repoUrl" > "$REPOSFOLDER/$repo"
 	fi
 	echo "Updated repo: $repo $repoUrl"
-	exit 1
+	exit 0
 }
 
 removeRepo() {
@@ -89,14 +89,14 @@ removeRepo() {
 		rm -rf "$REPOSFOLDER/$repo"
 	fi
 	echo "Removed repo: $repo"
-	exit 1
+	exit 0
 }
 
 listRepos() {
 	for repo in $REPOSFOLDER/*;do
-		echo "${GREEN}$(basename "$repo")${NC} $(cat "$repo")"
+		echo -e "${GREEN}$(basename "$repo")${NC} $(cat "$repo")"
 	done
-	exit 1
+	exit 0
 }
 
 #searchRepo repo repo_dir packageName
