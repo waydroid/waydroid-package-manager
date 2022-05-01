@@ -26,10 +26,10 @@ NC='\033[0m' # No Color
 MAIN_ARCH=""
 SUB_ARCH=""
 case $(uname -m) in
-    i386)   MAIN_ARCH="x86" && echo "ABI:x86 & ABI2:x86 was preselected" ;;
-    i686)   MAIN_ARCH="x86" && echo "ABI:x86 & ABI2:x86 was preselected" ;;
-    x86_64) MAIN_ARCH="x86_64" && SUB_ARCH="x86" && echo "ABI:x86_64 & ABI2:x86 was preselected" ;;
-    arm)    dpkg --print-architecture | grep -q "arm64" && MAIN_ARCH="arm64-v8a" && SUB_ARCH="armeabi-v7a" && echo "ABI:arm64-v8a & ABI2:armeabi-v7a was preselected" || MAIN_ARCH="armeabi-v7a" && echo "ABI:armeabi-v7a was preselected" ;;
+    i386)   MAIN_ARCH="x86" && echo "ABI:x86 & ABI2:x86 was detected" ;;
+    i686)   MAIN_ARCH="x86" && echo "ABI:x86 & ABI2:x86 was detected" ;;
+    x86_64) MAIN_ARCH="x86_64" && SUB_ARCH="x86" && echo "ABI:x86_64 & ABI2:x86 was detected" ;;
+    arm)    dpkg --print-architecture | grep -q "arm64" && MAIN_ARCH="arm64-v8a" && SUB_ARCH="armeabi-v7a" && echo "ABI:arm64-v8a & ABI2:armeabi-v7a was detected" || MAIN_ARCH="armeabi-v7a" && echo "ABI:armeabi-v7a was detected" ;;
 esac
 
 mkdir -p $SHARED_DIR
@@ -117,6 +117,15 @@ searchRepo() {
 		version="$(xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./version "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[1]' -v ./version "$repo_dir"/index.xml)"
 		sdk="$(xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./sdkver "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[1]' -v ./sdkver "$repo_dir"/index.xml)"
 		targetsdk="$(xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./targetSdkVersion "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[id="'"$package"'"]/package[1]' -v ./targetSdkVersion "$repo_dir"/index.xml)"
+		name="$(xmlstarlet sel -t -m '//application[id="'"$package"'"]' -v ./name "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[id="'"$package"'"]' -v ./name "$repo_dir"/index.xml)"
+		# Search by name instead of id
+		npname="$(xmlstarlet sel -t -m '//application[name="'"$package"'"]' -v ./name "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[name="'"$package"'"]' -v ./name "$repo_dir"/index.xml)"
+		npapk="$(xmlstarlet sel -t -m '//application[name="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./apkname "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[name="'"$package"'"]/package[1]' -v ./apkname "$repo_dir"/index.xml)"
+		npsize="$(xmlstarlet sel -t -m '//application[name="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./size "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[name="'"$package"'"]/package[1]' -v ./size "$repo_dir"/index.xml)"
+		npversion="$(xmlstarlet sel -t -m '//application[name="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./version "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[name="'"$package"'"]/package[1]' -v ./version "$repo_dir"/index.xml)"
+		npsdk="$(xmlstarlet sel -t -m '//application[name="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./sdkver "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[name="'"$package"'"]/package[1]' -v ./sdkver "$repo_dir"/index.xml)"
+		nptargetsdk="$(xmlstarlet sel -t -m '//application[name="'"$package"'"]/package[versioncode="'"$marketvercode"'"]' -v ./targetSdkVersion "$repo_dir"/index.xml || xmlstarlet sel -t -m '//application[name="'"$package"'"]/package[1]' -v ./targetSdkVersion "$repo_dir"/index.xml)"
+		
 		if [ "$apk" != "" ]; then 
 			echo ""
 			echo -e "${GREEN}Found in repo: ${NC}$repo"
@@ -125,6 +134,18 @@ searchRepo() {
         	echo "Version: $version"
         	echo "SDK: $sdk"
         	echo "TargetSDK: $targetsdk"
+        	echo "Name: $name"
+			echo ""
+			return 0
+		elif [ "$npname" != "" ]; then
+			echo ""
+			echo -e "${GREEN}Found in repo: ${NC}$repo"
+        	echo -e "Package: ${LT_BLUE}$npapk${NC}"
+        	echo "Size: $npsize"
+        	echo "Version: $npversion"
+        	echo "SDK: $npsdk"
+        	echo "TargetSDK: $nptargetsdk"
+        	echo "Name: $npname"
 			echo ""
 			return 0
 		else
