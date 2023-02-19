@@ -171,7 +171,7 @@ installApp() {
 		exit 1
 	fi
 	echo -e "${GREEN}Installing $apkName ${NC}"
-	sudo waydroid app install $BINFOLDER/$apkName
+	waydroid app install $BINFOLDER/$apkName
 }
 
 removeApp() {
@@ -190,7 +190,7 @@ listApps() {
 		exit 1
 	fi
 	echo -e "${GREEN}Listing apps ${NC}"
-	sudo waydroid app list
+	waydroid app list
 }
 
 installApk() {
@@ -200,7 +200,7 @@ installApk() {
 		exit 1
 	fi
 	echo -e "${GREEN}Installing $apkName ${NC}"
-	sudo waydroid app install $apkName
+	waydroid app install $apkName
 }
 
 # Sort through flags
