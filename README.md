@@ -1,7 +1,7 @@
 # Waydroid Package Manager
 Version 1.0.16
 
-Easy to use interface for managing (install/remove) Android apps into [Waydroid](https://waydro.id) and managing (add/remove/update) repos as well
+Easy to use interface for managing (install/remove) Android apps into [Waydroid](https://waydro.id) and managing (add/remove/update) repos as well.
 This script is provided as a convenience and is not intended to be used as an enterprise solution.
 
 Copyright (c) 2022 Waydroid, GPLv3
