@@ -166,15 +166,17 @@ listAllRepoApps() {
 		unzip -po "$repo_dir"/index.jar index.xml > "$repo_dir"/index.xnl
 	fi
 
-	PACKAGE_NAMES=""
+	PACKAGE_NAMES=()
 	PACKAGE_IDS=$(xmlstarlet sel -t --value-of '//application/id' "$repo_dir"/index.xml)
 
 	for i in $PACKAGE_IDS; do
-		PACKAGE_NAMES+=$(xmlstarlet sel -t --value-of '//application[id = "'"$i"'"]'/name "$repo_dir"/index.xml)
+		PACKAGE_NAMES+=( "$(xmlstarlet sel -t --value-of '//application[id = "'"$i"'"]'/name "$repo_dir"/index.xml)" )
 	done
 
 	echo -e "${GREEN}Found the following apps:${NC}"
-	echo $PACKAGE_NAMES
+	for (( i=0; i<${#PACKAGE_NAMES[@]}; i++ )); do
+		echo "Package: ${PACKAGE_NAME[i]}"
+	done
 }
 
 cleanUp() {
