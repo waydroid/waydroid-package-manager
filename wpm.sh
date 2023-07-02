@@ -179,8 +179,11 @@ listAllRepoApps() {
 	PACKAGE_IDS=($(xmlstarlet sel -t --value-of '//application/id' "$repo_dir"/index.xml))
 	echo "Number of packages: ${#PACKAGE_IDS[@]}"
 
+	PACKAGE_COUNT=0
 	for i in "${PACKAGE_IDS[@]}"; do
-		PACKAGE_NAMES+=( "$(xmlstarlet sel -t --value-of '//application[id = "'"$i"'"]'/name "$repo_dir"/index.xml)" )
+		PACKAGE_COUNT=$(( $PACKAGE_COUNT + 1 ))
+		echo -ne "Processing Package: ${LT_BLUE} $PACKAGE_COUNT: ${i[@]}${NC}\033[0K\r"
+		PACKAGE_NAMES+=( "$(xmlstarlet sel -t --value-of '//application[id = "'"$i"'"]'/name "$repo_dir"/index.xml)" ) 
 	done 
 
 	echo -e "${GREEN}Found the following apps:${NC}"
