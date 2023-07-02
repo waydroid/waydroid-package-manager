@@ -154,6 +154,42 @@ searchRepo() {
 		fi
 }
 
+listAllRepoApps() {
+	repo="$1"
+	repo_dir="$2"
+
+	# Process given repo first, because the user only passes in the repo name, not link
+	repo_link=$(cat "$repo")
+
+	# Process the top repo first, then the rest. 
+	# echo "repo_link: $repo_link"
+	for link in $repo_link; do
+		# echo "link: $link"
+
+		if [ ! -f "$repo_dir"/index.xml ]; then
+			echo -e "${RED}$repo_dir/index.xml not found ${NC}"
+			downloadStuff "$link"/index.jar "$repo_dir"/index.jar
+			unzip -po "$repo_dir"/index.jar index.xml > "$repo_dir"/index.xnl
+		fi
+
+	done
+
+	PACKAGE_NAMES=()
+	PACKAGE_IDS=()
+	PACKAGE_IDS=($(xmlstarlet sel -t --value-of '//application/id' "$repo_dir"/index.xml))
+	echo "Number of packages: ${#PACKAGE_IDS[@]}"
+
+	for i in "${PACKAGE_IDS[@]}"; do
+		PACKAGE_NAMES+=( "$(xmlstarlet sel -t --value-of '//application[id = "'"$i"'"]'/name "$repo_dir"/index.xml)" )
+	done 
+
+	echo -e "${GREEN}Found the following apps:${NC}"
+
+	for i in "${PACKAGE_NAMES[@]}"; do
+		echo -e "Package: ${LT_BLUE}$i${NC}"
+	done
+}
+
 cleanUp() {
 	rm -rf $TEMPFOLDER
 	rm -rf $BINFOLDER
@@ -216,6 +252,7 @@ do
       echo "	-v | --version: Shows version info"
       echo "	-s | --search | search: Searches all repos for a package"
       echo "	-l | --listrepos | listrepos: Lists all added fdroid repos"
+      echo "	-la | --listallapps | listallapps: Lists all apps on a specific repo"
       echo "	-a | --addrepo | addrepo (repo repo_url): Adds a new fdroid repo"
       echo "	-r | --removerepo | removerepo (repo): Removes a repo"
       echo "	-u | --updaterepo | updaterepo (repo repo_url): Updates a new fdroid repo"
@@ -249,6 +286,11 @@ do
       ;;
     -l | --listrepos | listrepos)
 	  LIST_REPOS="true";
+      ;;
+    -la | --listallapps | listallapps)
+          shift
+          LIST_ALL_APPS="true"
+          REPONAME=$1
       ;;
     -i | --install | install)
 	  INSTALL="true";
@@ -323,6 +365,8 @@ elif [ "$LIST_REPOS" == "true" ]; then
 	listRepos ;
 elif [ "$LIST_APPS" == "true" ]; then
 	listApps ;
+elif [ "$LIST_ALL_APPS" == "true" ]; then
+	listAllRepoApps "$REPOSFOLDER"/"$REPONAME" "$TEMPFOLDER"/"$REPONAME"
 elif [ "$REMOVE" == "true" ]; then
 	removeApp "$1";
 elif [ "$APKINSTALL" == "true" ]; then
