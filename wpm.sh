@@ -161,21 +161,32 @@ listAllRepoApps() {
 	# Process given repo first, because the user only passes in the repo name, not link
 	repo_link=$(cat "$repo")
 
-	if [ ! -f "$repo_dir"/index.xml ]; then
-		downloadStuff "$repo_link"/index.jar "$repo_dir"/index.jar
-		unzip -po "$repo_dir"/index.jar index.xml > "$repo_dir"/index.xnl
-	fi
+	# Process the top repo first, then the rest. 
+	# echo "repo_link: $repo_link"
+	for link in $repo_link; do
+		# echo "link: $link"
 
-	PACKAGE_NAMES=()
-	PACKAGE_IDS=$(xmlstarlet sel -t --value-of '//application/id' "$repo_dir"/index.xml)
+		if [ ! -f "$repo_dir"/index.xml ]; then
+			echo -e "${RED}$repo_dir/index.xml not found ${NC}"
+			downloadStuff "$link"/index.jar "$repo_dir"/index.jar
+			unzip -po "$repo_dir"/index.jar index.xml > "$repo_dir"/index.xnl
+		fi
 
-	for i in $PACKAGE_IDS; do
-		PACKAGE_NAMES+=( "$(xmlstarlet sel -t --value-of '//application[id = "'"$i"'"]'/name "$repo_dir"/index.xml)" )
 	done
 
+	PACKAGE_NAMES=()
+	PACKAGE_IDS=()
+	PACKAGE_IDS=($(xmlstarlet sel -t --value-of '//application/id' "$repo_dir"/index.xml))
+	echo "Number of packages: ${#PACKAGE_IDS[@]}"
+
+	for i in "${PACKAGE_IDS[@]}"; do
+		PACKAGE_NAMES+=( "$(xmlstarlet sel -t --value-of '//application[id = "'"$i"'"]'/name "$repo_dir"/index.xml)" )
+	done 
+
 	echo -e "${GREEN}Found the following apps:${NC}"
-	for (( i=0; i<${#PACKAGE_NAMES[@]}; i++ )); do
-		echo "Package: ${PACKAGE_NAME[i]}"
+
+	for i in "${PACKAGE_NAMES[@]}"; do
+		echo -e "Package: ${LT_BLUE}$i${NC}"
 	done
 }
 
