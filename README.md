@@ -1,7 +1,7 @@
 # Waydroid Package Manager
 Version 1.0.16
 
-Easy to use interface for managing (install/remove) Android apps into [Waydroid](https://waydro.id) and managing (add/remove/update) repos as well.
+Easy to use interface for managing (install/remove) Android apps into [Waydroid](https://waydro.id) and managing (add/remove/update) f-droid based repos as well.
 This script is provided as a convenience and is not intended to be used as an enterprise solution.
 
 Copyright (c) 2022 Waydroid, GPLv3
@@ -33,6 +33,7 @@ Then you can install it like so:
     -v | --version: Shows version info
     -s | --search | search: Searches all repos for a package
     -l | --listrepos | listrepos: Lists all added fdroid repos
+    -la | --listallapps | listallapps: Lists all apps on a specific repo
     -a | --addrepo | addrepo (repo repo_url): Adds a new fdroid repo
     -r | --removerepo | removerepo (repo): Removes a repo
     -u | --updaterepo | updaterepo (repo repo_url): Updates a new fdroid repo
