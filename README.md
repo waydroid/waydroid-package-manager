@@ -23,7 +23,12 @@ First, clone this repo:
 Then you can install it like so:
 
     sudo chmod +x wpm.sh
-    mkdir -p ~/.local/share/wpm && cp wpm.sh ~/.local/bin/wpm && mkdir -p ~/.local/share/wpm/repos && cp -r repos/* ~/.local/share/wpm/repos
+    mkdir -p ~/.local/bin && cp wpm.sh ~/.local/bin/wpm
+    mkdir -p ~/.local/share/wpm/repos && cp -r repos/* ~/.local/share/wpm/repos
+
+Check that `~/.local/bin` is in your `PATH`; else, add it to your `.bashrc` and log in again (you may want to adjust it for your shell, e.g. by appending the export to your `.profile`):
+
+    if ! echo $PATH | tr : '\n' | grep "$HOME/.local/bin" > /dev/null; then echo 'export PATH="$HOME/.local/bin:$PATH"' | tee -a ~/.bashrc && su $USER; fi
 
 ## Usage
 
